@@ -7,48 +7,216 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script src="http://processingjs.org/js/processing.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript">
+google.load("swfobject", "2.1");
+</script>   
 <script>
+var slow = "http://www.youtube.com/v/3gQCUACBxTo?list=PL03F5FBFB84F5FD83";
+var medium = "http://www.youtube.com/v/fLexgOxsZu0?list=PL2CD56CF5015D0587";
+var fast = "http://www.youtube.com/v/DOtoIBrBAYE?list=PL0E1DC7FEF1D17512";
+/*
+ * Polling the player for information
+ */
 
-    var slow = '<iframe width="560" height="315" src="http://www.youtube.com/embed/videoseries?list=PL03F5FBFB84F5FD83&autoplay=1&amp;hl=en_US" frameborder="0" allowfullscreen></iframe>';
+// Update a particular HTML element with a new value
+function updateHTML(elmId, value) {
+    document.getElementById(elmId).innerHTML = value;
+}
 
-    var medium = '<iframe width="560" height="315" src="http://www.youtube.com/embed/videoseries?list=PL2CD56CF5015D0587&autoplay=1&amp;hl=en_US" frameborder="0" allowfullscreen></iframe>';
+// This function is called when an error is thrown by the player
+function onPlayerError(errorCode) {
+    alert("An error occured of type:" + errorCode);
+}
 
-    var fast = '<iframe width="560" height="315" src="http://www.youtube.com/embed/videoseries?list=PL0E1DC7FEF1D17512&autoplay=1&amp;hl=en_US" frameborder="0" allowfullscreen></iframe>';
-    
-    var mood = 0;
+// This function is called when the player changes state
+function onPlayerStateChange1(newState) {
+    updateHTML("playerState1", newState);
+}
 
-    $(document).ready(function() {
+// This function is called when the player changes state
+function onPlayerStateChange2(newState) {
+    updateHTML("playerState2", newState);
+}
+
+function onPlayerStateChange0(newState) {
+    updateHTML("playerState0", newState);
+}
+
+var onFocusVolume = 100;
+var offFocusVol = 0;
+var curmood = 0;
+
+// Display information about the current state of the player
+function updatePlayerInfo0() {
+    if(ytplayer0 && ytplayer0.getDuration) {
+        updateHTML("videoDuration", ytplayer0.getDuration());
+        updateHTML("videoCurrentTime", ytplayer0.getCurrentTime());
+        updateHTML("bytesTotal", ytplayer0.getVideoBytesTotal());
+        updateHTML("startBytes", ytplayer0.getVideoStartBytes());
+        updateHTML("bytesLoaded", ytplayer0.getVideoBytesLoaded());
+    }
+}
+function updatePlayerInfo1() {
+    if(ytplayer1 && ytplayer1.getDuration) {
+        updateHTML("videoDuration", ytplayer1.getDuration());
+        updateHTML("videoCurrentTime", ytplayer1.getCurrentTime());
+        updateHTML("bytesTotal", ytplayer1.getVideoBytesTotal());
+        updateHTML("startBytes", ytplayer1.getVideoStartBytes());
+        updateHTML("bytesLoaded", ytplayer1.getVideoBytesLoaded());
+    }
+}
+
+function updatePlayerInfo2() {
+    if(ytplayer2 && ytplayer2.getDuration) {
+        updateHTML("videoDuration2", ytplayer2.getDuration());
+        updateHTML("videoCurrentTime2", ytplayer2.getCurrentTime());
+        updateHTML("bytesTotal2", ytplayer2.getVideoBytesTotal());
+        updateHTML("startBytes2", ytplayer2.getVideoStartBytes());
+        updateHTML("bytesLoaded2", ytplayer2.getVideoBytesLoaded());
+    }
+}
+
+function updateVol0()
+{
+    if(ytplayer0)
+    {
+        vol = ytplayer0.getVolume();
+        if(curmood!=0)
+            ytplayer0.setVolume(3*vol/4);
+        else
+            ytplayer0.setVolume(100);
+    }
+
+}
+function updateVol1()
+{
+    if(ytplayer1)
+    {
+        vol = ytplayer1.getVolume();
+        if(curmood!=1)
+            ytplayer1.setVolume(3*vol/4);
+        else
+            ytplayer1.setVolume(100);
+    }
+
+}
+
+
+function updateVol2()
+{
+    if(ytplayer2)
+    {
+        vol = ytplayer2.getVolume();
+        if(curmood!=2)
+            ytplayer2.setVolume(3*vol/4);
+        else
+            ytplayer2.setVolume(100);
+    }
+
+}
+
+
+
+// This function is automatically called by the player once it loads
+function onYouTubePlayerReady(playerId) {
+    if(playerId == "player0") {
+        ytplayer0 = document.getElementById("ytPlayer0");
+        ytplayer0.playVideo();
+       // setInterval(updatePlayerInfo0, 250);
+      //  updatePlayerInfo0();
+        setInterval(updateVol0, 250);
+        ytplayer0.addEventListener("onStateChange", "onPlayerStateChange0");
+        ytplayer0.addEventListener("onError", "onPlayerError");
+    }
+    else  if(playerId == "player1") {
+        ytplayer1 = document.getElementById("ytPlayer1");
+        ytplayer1.playVideo();
+       // setInterval(updatePlayerInfo1, 250);
+        //updatePlayerInfo1();
+        setInterval(updateVol1, 250);
+        ytplayer1.addEventListener("onStateChange", "onPlayerStateChange1");
+        ytplayer1.addEventListener("onError", "onPlayerError");
+    }
+    else if(playerId == "player2") {
+        ytplayer2 = document.getElementById("ytPlayer2");
+        ytplayer2.playVideo();
+       // setInterval(updatePlayerInfo2, 250);
+       // updatePlayerInfo2();
+        setInterval(updateVol2, 250);
+        ytplayer2.addEventListener("onStateChange", "onPlayerStateChange2");
+        ytplayer2.addEventListener("onError", "onPlayerError");
+    }
+}
+
+// The "main method" of this sample. Called when someone clicks "Run".
+function loadPlayer() {
+    // The video to load
+    var params = { allowScriptAccess: "always" };
+    var atts = { id: "ytPlayer0" };
+    swfobject.embedSWF(slow+
+            "&version=3&enablejsapi=1&playerapiid=player0", 
+            "videoDiv0", "425", "344", "9", null, null, params, atts);
+
+    // Now do it all again with a different player
+    var params = { allowScriptAccess: "always" };
+    var atts = { id: "ytPlayer1" };
+    swfobject.embedSWF(medium+ 
+            "&version=3&enablejsapi=1&playerapiid=player1", 
+            "videoDiv1", "425", "344", "9", null, null, params, atts);
+
+    var params = { allowScriptAccess: "always" };
+    var atts = { id: "ytPlayer2" };
+    swfobject.embedSWF(fast+ 
+            "&version=3&enablejsapi=1&playerapiid=player2", 
+            "videoDiv2", "425", "344", "9", null, null, params, atts);
+
+}
+
+
+$(document).ready(function() {
         // Handler for .ready() called.
 
         var url = location.href;
         var i = url.lastIndexOf('/');
         url = url.substr(0, i);
-        //console.log(url);
         var socket = io.connect(url);
 
-        var pak = $("#pakrox");
-        pak.html(slow); // auto play slow
-
-        socket.on('meta', function(data) {
-            if (data.mood != mood) {
-                // change
+        socket.on('meta', function(data) 
+        {
+        curmood = data.mood;
+        console.log(curmood);
+        //updateVol0(0);
+        //updateVol1(0);
+        //updateVol2(0);
+            /*if (data.mood != mood) 
+            {
                 mood = data.mood;
-                switch (mood) {
-                    case 0:
-                        pak.html(slow);
-                        break;
-                    case 1:
-                        pak.html(medium);
-                        break;
-                    case 2:
-                        pak.html(fast);
-                        break;
-                }
+            switch (mood) {
+            case 0:
+            curplayer.pauseVideo();
+            ytplayer0.playVideo();
+            curplayer = ytplayer0;
+            break;
+            case 1:
+            curplayer.pauseVideo();
+            ytplayer1.playVideo();
+            curplayer = ytplayer1;        break;
+            case 2:
+            curplayer.pauseVideo();
+            ytplayer2.playVideo();
+            curplayer = ytplayer2;        break;
+            break;
             }
-        });
+            }*/
+            });
 
-    });
+});
+
+function _run() {
+    loadPlayer();
+}
+google.setOnLoadCallback(_run);
 
 </script>
 </head>
@@ -60,7 +228,13 @@
 
 <p>Listen Coding tunes</p>
 
-<div id="pakrox"></div>
-
+<!--div id="pakrox"></div--!>
+<table>
+<tr>
+<td><div id="videoDiv0">Loading...</div></td>
+<td><div id="videoDiv1">Loading...</div></td>
+<td><div id="videoDiv2">Loading...</div></td>
+</tr><tr>
+</table>
 </body>
 </html>
