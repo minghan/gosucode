@@ -9,15 +9,41 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
+
+    var slow = '<iframe width="560" height="315" src="http://www.youtube.com/embed/videoseries?list=PL03F5FBFB84F5FD83&autoplay=1&amp;hl=en_US" frameborder="0" allowfullscreen></iframe>';
+
+    var medium = '<iframe width="560" height="315" src="http://www.youtube.com/embed/videoseries?list=PL2CD56CF5015D0587&autoplay=1&amp;hl=en_US" frameborder="0" allowfullscreen></iframe>';
+
+    var fast = '<iframe width="560" height="315" src="http://www.youtube.com/embed/videoseries?list=PL0E1DC7FEF1D17512&autoplay=1&amp;hl=en_US" frameborder="0" allowfullscreen></iframe>';
+    
+    var mood = 0;
+
     $(document).ready(function() {
         // Handler for .ready() called.
 
-        //var socket = io.connect(location.href);
-        $("#pakrox").append("<div id='slow'>" +
-        '<iframe width="560" height="315" src="http://www.youtube.com/embed/videoseries?list=PL03F5FBFB84F5FD83&amp;hl=en_US" frameborder="0" allowfullscreen></iframe>' + "</div>");
+        var socket = io.connect(location.href);
+
+        var pak = $("#pakrox");
+        pak.html(slow); // auto play slow
+
+        socket.on('meta', function(data) {
+            if (data.mood != mood) {
+                // change
+                switch (mood) {
+                    case 0:
+                        pak.html(slow);
+                        break;
+                    case 1:
+                        pak.html(medium);
+                        break;
+                    case 2:
+                        pak.html(fast);
+                        break;
+                }
+            }
+        });
 
     });
-
 
 </script>
 </head>
