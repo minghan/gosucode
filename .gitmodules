@@ -1,3 +1,0 @@
-[submodule "server/node_modules/socket.io"]
-	path = server/node_modules/socket.io
-	url = https://github.com/LearnBoost/socket.io
