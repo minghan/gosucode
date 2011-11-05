@@ -6,22 +6,13 @@ int arrX= 82, arrDx =30, arrY  = 300, arrDy = 10;
 
 long  totalCpm = 0;
 int cpm;
+int tCount;
 
 void setup()
 {
     size(800, 400);
     background(0);
-    //stroke(255);
-    //strokeWeight(5);
-    //noFill();
-    //ellipse(400, 200, 350, 350);
-    //ellipse(200, 300, 150, 150);
-    //ellipse(600, 300, 150, 150);
-    //rect(40, 50, 450, 150);
     f1 =  loadFont("Courier");
-
-    //smooth();
-    //noLoop();
 }
 
 void draw()
@@ -49,12 +40,12 @@ void updateCpm()
     {
         for (int i=1; i<inputArr.length; i++)
             inputArr[i-1] = inputArr[i];
-        inputArr[inputArr.length-1] = cpm;
+        inputArr[inputArr.length-1] = tCount;
     }
 
     if (frameCount% cpmLen ==0 )
     {
-        cpm = 0;
+        tCount = 0;
     }
 }
 
@@ -92,9 +83,25 @@ void drawArr()
         point(arrX + arrDx*(i+1), arrY-arrDy*inputArr[i]);
 }
 
-void gs_keyPressed() {
-    cpm++;
-    totalCpm++;
+void gsPoke() {
+    tCount++;
+}
+
+void gsDigest(float curcpm, float curodo, float mood)
+{
+    cpm = (int) (curcpm);
+    totalCpm = (int) curodo;
+    int cur_mood = (int)mood;
+    textFont(f1,40);
+    textAlign(LEFT);
+    switch(mood)
+    {
+        case 0: text("GET BACK TO WORK",100,100); break;
+        case 1: text("WORK WORK!",100,200); break;
+        case 2: text("0W3NAGE",600,200); break;
+    }
+
+
 }
 
 /*

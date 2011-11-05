@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>GosuCode</title>
+    <title>GosuView</title>
 
     <!-- load from cdn -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -24,14 +24,28 @@
 
         socket.on('in', function(data) {
             // console.log(data);
-            gosuX(data.i, data.t);
+            gosuPoke(data.i, data.t);
         });
 
-        function gosuX(inputcode, timestamp) {
+        socket.on('meta', function(data) {
+            gosuDigest(data.cur_cpm, data.odo, data.mood);
+            }
+            
+            );
+
+        function gosuDigest(cur_cpm, odo, mood)
+        {
+           if (!processingInstance) {
+                processingInstance = Processing.getInstanceById('canvasGosu');
+            }
+            processingInstance.gsDigest(cur_cpm, odo, mood);
+        }
+
+        function gosuPoke(inputcode, timestamp) {
             if (!processingInstance) {
                 processingInstance = Processing.getInstanceById('canvasGosu');
             }
-            processingInstance.gs_keyPressed();
+            processingInstance.gsPoke();
         }
     });
     </script>

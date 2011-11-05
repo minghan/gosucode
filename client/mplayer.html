@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<title>GosuListen</title>
+
+<!-- load from cdn -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script src="http://processingjs.org/js/processing.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="swfobject.js"></script> 
+
+<script>
+    $(document).ready(function() {
+        // Handler for .ready() called.
+
+        //var socket = io.connect(location.href);
+
+        var params = { allowScriptAccess: "always" };
+        var video_id = "ylLzyHk54Z0";
+        var atts = { id: "ytplayer" };
+        swfobject.embedSWF("http://www.youtube.com/v/tVOzcMVYczQ?list=PLA862916C4F90A3CC&enablejsapi=1&playerapiid=ytplayer",
+                                   "ytapiplayer", "425", "356", "8", null, null, params, atts);
+
+//         ytplayer = document.getElementById("ytplayer");
+  //      ytplayer.loadPlaylist("PLA862916C4F90A3CC", "1", "1","medium");
+        }
+        );
+        function onYouTubePlayerReady(playerId) {
+            ytplayer = document.getElementById("ytplayer");
+            ytplayer.loadPlaylist("PLA862916C4F90A3CC");
+            ytplayer.playVideo();
+        }
+
+        
+
+
+</script>
+</head>
+
+
+<body>
+
+<h1>GosuListen</h1>
+
+<p>Listen Coding tunes</p>
+ <div id="ytapiplayer">
+     You need Flash player 8+ and JavaScript enabled to view this video.
+       </div>
+
+       <iframe src="
+http://www.youtube.com/watch?v=6D0N2Gsw2Uk&list=PLA862916C4F90A3CC"
+width="100%" height="500" frameborder="0"></iframe>
+<p style="color: grey;">CMU Facebook Hackathon 2011. By: hchin, mteh</p>
+
+</body>
+</html>
