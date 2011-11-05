@@ -76,8 +76,8 @@ var MOOD_CODE_BAR = 50;
 
 function timer_handler()
 {
-    metastats.time_elapsed += timer_period;
-
+    metastats.time_elapsed += timer_period; 
+    //console.log(metastats.time_elapsed);
     var len = inputQueue.length;
     if(len > 0) 
     {
