@@ -21,7 +21,11 @@
     $(document).ready(function() {
         // Handler for .ready() called.
 
-        var socket = io.connect(location.href);
+        var url = location.href;
+        var i = url.lastIndexOf('/');
+        url = url.substr(0, i);
+        //console.log(url);
+        var socket = io.connect(url);
 
         var pak = $("#pakrox");
         pak.html(slow); // auto play slow
@@ -29,6 +33,7 @@
         socket.on('meta', function(data) {
             if (data.mood != mood) {
                 // change
+                mood = data.mood;
                 switch (mood) {
                     case 0:
                         pak.html(slow);
