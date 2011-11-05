@@ -1,0 +1,35 @@
+<html>
+<head>
+<script src="processing.js"></script>
+</head>
+<p><canvas id="canvas1" width="400" height="400"></canvas></p>
+
+<script id="script1" type="text/javascript">
+
+// draw gosu view
+
+function gosu(inputcode, timestamp)
+{
+
+}
+function sketchProc(pd) 
+{
+    // Override draw function, by default it will be called 60 times per second
+    pd.draw = function() 
+    {
+        pd.background(224);
+        var now = new Date();
+        pd.text(now, 20, 20);
+    };
+
+}
+
+var canvas = document.getElementById("canvas1");
+// attaching the sketchProc function to the canvas
+var p = new Processing(canvas, sketchProc);
+// p.exit(); to detach it
+</script>
+
+<div style="height:0px;width:0px;overflow:hidden;"></div>
+
+
