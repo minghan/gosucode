@@ -1,0 +1,9 @@
+[submodule "server/node_modules/socket.io"]
+	path = server/node_modules/socket.io
+	url = https://github.com/LearnBoost/socket.io
+[submodule "server/node_modules/socket.io-client"]
+	path = server/node_modules/socket.io-client
+	url = https://github.com/LearnBoost/socket.io-client
+[submodule "server/node_modules/uglify-js"]
+	path = server/node_modules/uglify-js
+	url = https://github.com/mishoo/UglifyJS
