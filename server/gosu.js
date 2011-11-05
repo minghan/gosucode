@@ -60,18 +60,45 @@ instream.addListener('data', function(chunk) {
 app.listen(80);
 
 function http_handler(req, res) {
-    console.log(req);
-    fs.readFile(path.join(__dirname, '../client/index.html'),
-        function (err, data) {
-            if (err) {
-                res.writeHead(500);
-                return res.end('Error loading index.html');
-            }
+    console.log(req.url);
+    var filepath;
+    if (req.url == '/') {
+        filepath = "index.html";
+    } else {
+        filepath = req.url;
+    }
+    filepath = path.join(__dirname, '../client/', filepath);
+    
+    var extname = path.extname(filepath);
 
-            res.writeHead(200);
-            res.end(data);
+    path.exists(filepath, function (exists) {
+        if (exists) {
+            var contentType = 'text/html';
+            switch (extname) {
+                case '.js':
+                    contentType = 'text/javascript';
+                    break;
+                case '.css':
+                    contentType = 'text/css';
+                    break;
+            };
+
+            fs.readFile(filepath,
+                function (err, data) {
+                    if (err) {
+                        res.writeHead(500);
+                        return res.end('Error loading index.html');
+                    }
+
+                    res.writeHead(200, { 'Content-Type': contentType });
+                    res.end(data, 'utf-8');
+                }
+            );
+        } else {
+            res.writeHead(404);
+            res.end();
         }
-    );
+    });
 }
 
 // socket stuff
