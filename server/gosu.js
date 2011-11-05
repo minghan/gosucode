@@ -60,7 +60,7 @@ instream.addListener('data', function(chunk) {
 app.listen(80);
 
 function http_handler(req, res) {
-    console.log(req.url);
+    console.log("-> Request: " + req.url);
     var filepath;
     if (req.url == '/') {
         filepath = "index.html";
@@ -80,6 +80,13 @@ function http_handler(req, res) {
                     break;
                 case '.css':
                     contentType = 'text/css';
+                    break;
+                case '.htm':
+                case '.html':
+                    contentType = 'text/html';
+                    break;
+                default:
+                    contentType = 'text/plain';
                     break;
             };
 

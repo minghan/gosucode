@@ -12,8 +12,8 @@ void setup()
     size(800, 400);
     background(0);
     //stroke(255);
-//    strokeWeight(5);
-  //  noFill();
+    //strokeWeight(5);
+    //noFill();
     //ellipse(400, 200, 350, 350);
     //ellipse(200, 300, 150, 150);
     //ellipse(600, 300, 150, 150);
@@ -92,9 +92,17 @@ void drawArr()
         point(arrX + arrDx*(i+1), arrY-arrDy*inputArr[i]);
 }
 
-void keyPressed()
-{
+void gs_keyPressed() {
     cpm++;
     totalCpm++;
 }
+
+/*
+
+void keyPressed()
+{
+    gs_keyPressed()
+}
+
+*/
 

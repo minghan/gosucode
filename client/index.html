@@ -1,12 +1,45 @@
-<script src="/socket.io/socket.io.js"></script>
-<script>
-    var socket = io.connect('http://localhost');
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>GosuCode</title>
 
-    socket.on('news', function(data) {
-        console.log(data);
-    });
+    <!-- load from cdn -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="http://processingjs.org/js/processing.min.js"></script>
 
-    socket.on('in', function(data) {
-        console.log(data);
+    <!-- <script src="processing.js"></script> -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        // Handler for .ready() called.
+
+        var socket = io.connect('http://localhost');
+        var processingInstance;
+
+        socket.on('news', function(data) {
+            console.log(data);
+        });
+
+        socket.on('in', function(data) {
+            // console.log(data);
+            gosuX(data.i, data.t);
+        });
+
+        function gosuX(inputcode, timestamp) {
+            if (!processingInstance) {
+                processingInstance = Processing.getInstanceById('canvasGosu');
+            }
+            processingInstance.gs_keyPressed();
+        }
     });
-</script>
+    </script>
+</head>
+<body>
+
+<canvas id="canvasGosu" data-processing-sources="viewer.pde"></canvas>  
+
+</body>
+</html>
+
