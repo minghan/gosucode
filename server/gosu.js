@@ -3,6 +3,7 @@
 *****************************/
 
 var globals = {
+    port: 8080
 };
 
 
@@ -57,7 +58,7 @@ instream.addListener('data', function(chunk) {
 
 // http server
 
-app.listen(80);
+app.listen(globals.port);
 
 function http_handler(req, res) {
     console.log("-> Request: " + req.url);
